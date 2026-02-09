@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Input, Button, Avatar, Badge, Dropdown, message } from 'antd';
-import { SearchOutlined, ShoppingCartOutlined, UserOutlined, HeartOutlined, BellOutlined, DownOutlined, LogoutOutlined } from '@ant-design/icons';
+import { SearchOutlined, ShoppingCartOutlined, UserOutlined, HeartOutlined, BellOutlined, DownOutlined } from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header } = Layout;
@@ -31,28 +31,6 @@ const Navbar = () => {
     navigate('/');
   };
 
-  // 用户下拉菜单
-  const userMenu = (
-    <Menu>
-      <Menu.Item key="profile">
-        <Link to="/user">个人中心</Link>
-      </Menu.Item>
-      <Menu.Item key="orders">
-        <Link to="/orders">我的订单</Link>
-      </Menu.Item>
-      <Menu.Item key="favorites">
-        <Link to="/favorites">我的收藏</Link>
-      </Menu.Item>
-      <Menu.Item key="settings">
-        <Link to="/settings">账户设置</Link>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item key="logout" onClick={handleLogout} icon={<LogoutOutlined />}>
-        退出登录
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', backgroundColor: '#fff', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', flexWrap: 'wrap' }}>
       {/* Logo */}
@@ -75,7 +53,9 @@ const Navbar = () => {
       {/* 功能按钮区 */}
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Badge count={5} style={{ marginRight: 24 }}>
-          <Button type="text" icon={<HeartOutlined />} size="large" />
+          <Link to="/favorites">
+            <Button type="text" icon={<HeartOutlined />} size="large" />
+          </Link>
         </Badge>
 
         <Badge count={3} style={{ marginRight: 24 }}>
@@ -85,17 +65,55 @@ const Navbar = () => {
         </Badge>
 
         <Badge count={2} style={{ marginRight: 24 }}>
-          <Button type="text" icon={<BellOutlined />} size="large" />
+          <Link to="/notifications">
+            <Button type="text" icon={<BellOutlined />} size="large" />
+          </Link>
         </Badge>
 
         {/* 用户登录/头像区域 */}
         {isLoggedIn ? (
-          <Dropdown overlay={userMenu} trigger={['click']}>
-            <Button type="text" size="large" style={{ display: 'flex', alignItems: 'center' }}>
+          <Dropdown
+            menu={{
+              items: [
+                {
+                  key: 'profile',
+                  label: '个人中心',
+                  onClick: () => navigate('/user')
+                },
+                {
+                  key: 'orders',
+                  label: '我的订单',
+                  onClick: () => navigate('/user')
+                },
+                {
+                  key: 'favorites',
+                  label: '我的收藏',
+                  onClick: () => navigate('/user')
+                },
+                {
+                  key: 'settings',
+                  label: '账户设置',
+                  onClick: () => navigate('/user')
+                },
+                {
+                  type: 'divider'
+                },
+                {
+                  key: 'logout',
+                  label: '退出登录',
+                  danger: true,
+                  onClick: handleLogout
+                }
+              ]
+            }}
+            trigger={['hover', 'click']}
+            placement="bottomRight"
+          >
+            <div style={{ display: 'flex', alignItems: 'center', padding: '4px 8px', cursor: 'pointer' }}>
               <Avatar icon={<UserOutlined />} style={{ marginRight: 8 }} />
-              <span style={{ marginRight: 4 }}>{username}</span>
-              <DownOutlined />
-            </Button>
+              <span>{username}</span>
+              <DownOutlined style={{ marginLeft: 4 }} />
+            </div>
           </Dropdown>
         ) : (
           <Button type="primary" size="large" onClick={() => navigate('/login')}>

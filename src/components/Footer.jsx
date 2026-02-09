@@ -1,10 +1,10 @@
-import React from 'react';
-import { Layout, Row, Col, Typography, Space, Divider } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Tooltip, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { PhoneOutlined, MailOutlined, EnvironmentOutlined, WechatOutlined, WeiboOutlined, QqOutlined } from '@ant-design/icons';
 
 const { Footer } = Layout;
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const AppFooter = () => {
   // 页脚导航数据
@@ -59,57 +59,57 @@ const AppFooter = () => {
   ];
 
   return (
-    <Footer style={{ backgroundColor: '#000', color: '#fff', padding: '30px 0 20px 0' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-        <Row gutter={[48, 24]}>
-          {/* 导航链接 */}
+    <Footer style={{ backgroundColor: '#000', color: '#fff', height: '5vh', minHeight: '40px', display: 'flex', alignItems: 'center', padding: '0 24px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* 导航链接 - 水平排列，带悬停显示内容 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
           {footerLinks.map((group, index) => (
-            <Col xs={24} sm={12} md={6} key={index}>
-              <h4 style={{ color: '#fff', marginBottom: 16, fontSize: 16, fontWeight: 500 }}>{group.title}</h4>
-              <Space direction="vertical" size={8} style={{ width: '100%' }}>
-                {group.links.map((link, linkIndex) => (
-                  <Link key={linkIndex} href={link.href} style={{ color: '#999', display: 'block', fontSize: 14 }}>
-                    {link.name}
-                  </Link>
-                ))}
-              </Space>
-            </Col>
-          ))}
-
-          {/* 联系信息 */}
-          <Col xs={24} sm={12} md={6}>
-            <h4 style={{ color: '#fff', marginBottom: 16, fontSize: 16, fontWeight: 500 }}>联系我们</h4>
-            <Space direction="vertical" size={12} style={{ width: '100%' }}>
-              {contactInfo.map((info, index) => (
-                <div key={index} style={{ display: 'flex', alignItems: 'flex-start' }}>
-                  <div style={{ marginRight: 12, color: '#ff4d4f', fontSize: 18 }}>{info.icon}</div>
-                  <div>
-                    <Text style={{ color: '#fff', fontSize: 14 }}>{info.text}</Text>
-                    {info.description && <Text style={{ color: '#999', display: 'block', marginTop: 2, fontSize: 12 }}>{info.description}</Text>}
-                  </div>
+            <Tooltip
+              key={index}
+              title={
+                <div style={{ padding: '12px', minWidth: '150px' }}>
+                  {group.links.map((link, linkIndex) => (
+                    <div key={linkIndex} style={{ marginBottom: '8px' }}>
+                      <Link href={link.href} style={{ color: '#fff', fontSize: '12px', display: 'block' }}>
+                        {link.name}
+                      </Link>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </Space>
-
-            {/* 社交媒体 */}
-            <div style={{ marginTop: 16 }}>
-              <h5 style={{ color: '#fff', marginBottom: 12, fontSize: 14, fontWeight: 500 }}>关注我们</h5>
-              <Space size="middle" style={{ fontSize: 20 }}>
-                <WechatOutlined style={{ color: '#52c41a' }} />
-                <WeiboOutlined style={{ color: '#ff4d4f' }} />
-                <QqOutlined style={{ color: '#1890ff' }} />
-              </Space>
-            </div>
-          </Col>
-        </Row>
-
-        <Divider style={{ borderColor: '#333', margin: '30px 0' }} />
-
-        {/* 版权信息 */}
-        <div style={{ textAlign: 'center', color: '#666' }}>
-          <Text style={{ fontSize: 14 }}>© 2024 电商平台. All Rights Reserved.</Text>
-          <br />
-          <Text style={{ marginTop: 8, display: 'block', fontSize: 12 }}>京ICP备12345678号 | 京公网安备110101000000号</Text>
+              }
+              placement="top"
+              color="#333"
+            >
+              <Link href="#" style={{ color: '#fff', fontSize: 14, fontWeight: 500 }}>
+                {group.title}
+              </Link>
+            </Tooltip>
+          ))}
+          
+          {/* 联系我们带悬停显示内容 */}
+          <Tooltip
+            title={
+              <div style={{ padding: '12px', minWidth: '200px' }}>
+                {contactInfo.map((info, index) => (
+                  <div key={index} style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ color: '#ff4d4f' }}>{info.icon}</span>
+                    <span style={{ color: '#fff', fontSize: '12px' }}>{info.text}</span>
+                  </div>
+                ))}
+              </div>
+            }
+            placement="top"
+            color="#333"
+          >
+            <Link href="#" style={{ color: '#fff', fontSize: 14, fontWeight: 500 }}>联系我们</Link>
+          </Tooltip>
+        </div>
+        
+        {/* 社交媒体 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <WechatOutlined style={{ color: '#52c41a', fontSize: 20 }} />
+          <WeiboOutlined style={{ color: '#ff4d4f', fontSize: 20 }} />
+          <QqOutlined style={{ color: '#1890ff', fontSize: 20 }} />
         </div>
       </div>
     </Footer>
